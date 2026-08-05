@@ -1,7 +1,7 @@
 let playerName = "";
 let score = 0;
 let gameInterval;
-let memeTriggered = false; // Garante que o vídeo toque só 1 vez por rodada
+let memeTriggered = false;
 
 // Referências das Telas
 const screenName = document.getElementById("screen-name");
@@ -48,20 +48,19 @@ btnStart.addEventListener("click", () => {
 // Botão "X" para Sair do Jogo
 btnClose.addEventListener("click", () => {
     stopGame();
-    // Limpa os patos da tela
     river.innerHTML = "";
-    // Volta para a tela inicial
     screenGame.classList.remove("active");
     screenName.classList.add("active");
     inputName.value = "";
 });
 
-// Iniciar Spawn dos Patos
+// Iniciar Spawn de Patos (Acelerado para aparecerem muitos patos)
 function startGame() {
     score = 0;
     memeTriggered = false;
     updateScore();
-    gameInterval = setInterval(spawnDuck, 900);
+    // Aparece um novo pato a cada 180 milissegundos
+    gameInterval = setInterval(spawnDuck, 180);
 }
 
 function stopGame() {
@@ -71,27 +70,27 @@ function stopGame() {
 function updateScore() {
     displayScore.textContent = `Pontos: ${score}`;
 
-    // Dispara o vídeo do meme 67 quando atingir ou ultrapassar 67 pontos
+    // Dispara o vídeo do meme quando atingir 67 pontos ou mais
     if (score >= 67 && !memeTriggered) {
         memeTriggered = true;
         playMemeVideo();
     }
 }
 
-// Lógica para tocar o vídeo rápido do meme 67
+// Reproduz o vídeo na tela inteira de forma rápida
 function playMemeVideo() {
     memeModal.classList.add("active");
     memeVideo.currentTime = 0;
     memeVideo.play().catch(e => console.log("Erro ao reproduzir vídeo:", e));
 
-    // Fecha o vídeo automaticamente após 3 segundos (meme rápido)
+    // Esconde o vídeo após 2.5 segundos
     setTimeout(() => {
         memeVideo.pause();
         memeModal.classList.remove("active");
-    }, 3000);
+    }, 2500);
 }
 
-// Lógica de Geração de Patos
+// Lógica de Geração de Patos em Toda a Tela
 function spawnDuck() {
     const duck = document.createElement("div");
     duck.classList.add("duck");
@@ -99,7 +98,7 @@ function spawnDuck() {
 
     const rand = Math.random();
     let points = 1;
-    let speed = Math.random() * 2 + 3;
+    let speed = Math.random() * 2 + 2.5;
 
     if (rand < 0.5) {
         duck.classList.add("yellow");
@@ -113,12 +112,13 @@ function spawnDuck() {
     } else {
         duck.classList.add("rgb");
         points = 10;
-        speed = Math.random() * 1.5 + 1.5;
+        speed = Math.random() * 1.2 + 1.2;
     }
 
-    const topPosition = Math.random() * 70 + 15;
+    // Posição vertical espalhada por quase toda a tela (5% a 90%)
+    const topPosition = Math.random() * 85 + 5;
     duck.style.top = `${topPosition}%`;
-    duck.style.animationDuration = `${speed}s`;
+    duck.style.animation = `moveDuck ${speed}s linear forwards`;
 
     duck.addEventListener("mousedown", () => {
         score += points;
