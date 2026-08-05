@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo dos Patos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Tela 1: Nome do Jogador -->
+    <div id="screen-name" class="screen active">
+        <h1>Jogo dos Patos</h1>
+        <p>Digite seu nome para jogar:</p>
+        <input type="text" id="player-name" placeholder="Seu nome aqui" maxlength="15">
+        <button id="btn-next">Avançar</button>
+    </div>
+
+    <!-- Tela 2: Pato Grande e Iniciar -->
+    <div id="screen-start" class="screen">
+        <h2 id="welcome-message"></h2>
+        <div class="big-duck">🦆</div>
+        <button id="btn-start">Iniciar</button>
+    </div>
+
+    <!-- Tela 3: O Jogo do Rio -->
+    <div id="screen-game" class="screen">
+        <!-- Botão X para sair do jogo -->
+        <button id="btn-close" title="Sair do Jogo">X</button>
+
+        <div class="hud">
+            <span id="display-player"></span>
+            <span id="display-score">Pontos: 0</span>
+        </div>
+        <div id="river"></div>
+    </div>
+
+    <!-- Modal para Vídeo do Meme 67 -->
+    <div id="meme-modal" class="modal">
+        <div class="modal-content">
+            <video id="meme-video" playsinline>
+                <!-- Substitua a URL abaixo pelo link direto do seu vídeo/meme 67 favorito -->
+                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                Seu navegador não suporta vídeos HTML5.
+            </video>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
