@@ -1,0 +1,167 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #222;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    position: relative;
+}
+
+.screen.active {
+    display: flex;
+}
+
+input {
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: none;
+    margin: 15px 0;
+    text-align: center;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #ff9900;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+/* Botão X de Fechar/Sair */
+#btn-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background-color: #e74c3c;
+    color: white;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    font-size: 22px;
+    line-height: 45px;
+    z-index: 20;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+#btn-close:hover {
+    background-color: #c0392b;
+}
+
+.big-duck {
+    font-size: 120px;
+    margin: 20px 0;
+    animation: bounce 1.5s infinite ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+/* HUD do Jogo */
+.hud {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 10;
+}
+
+/* O Rio */
+#river {
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(180deg, #3498db, #2980b9);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Patos */
+.duck {
+    position: absolute;
+    font-size: 50px;
+    cursor: pointer;
+    user-select: none;
+    bottom: 20px;
+    white-space: nowrap;
+}
+
+.duck.yellow { filter: drop-shadow(0 0 5px yellow); }
+.duck.red { filter: hue-rotate(130deg) drop-shadow(0 0 5px red); }
+.duck.blue { filter: hue-rotate(200deg) drop-shadow(0 0 5px blue); }
+
+/* Pato RGB */
+.duck.rgb {
+    animation: rgb-rainbow 0.8s infinite linear, moveDuck linear forwards;
+}
+
+@keyframes rgb-rainbow {
+    0% { filter: hue-rotate(0deg) drop-shadow(0 0 10px red); }
+    33% { filter: hue-rotate(120deg) drop-shadow(0 0 10px green); }
+    66% { filter: hue-rotate(240deg) drop-shadow(0 0 10px blue); }
+    100% { filter: hue-rotate(360deg) drop-shadow(0 0 10px red); }
+}
+
+/* Animação do Pato Atravessando o Rio */
+@keyframes moveDuck {
+    0% { left: -60px; }
+    100% { left: 105vw; }
+}
+
+/* Modal do Vídeo do Meme */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content video {
+    max-width: 90vw;
+    max-height: 80vh;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
