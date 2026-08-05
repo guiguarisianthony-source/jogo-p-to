@@ -48,19 +48,19 @@ btnStart.addEventListener("click", () => {
 // Botão "X" para Sair do Jogo
 btnClose.addEventListener("click", () => {
     stopGame();
-    river.innerHTML = "";
+    river.innerHTML = ""; // Limpa todos os patos
     screenGame.classList.remove("active");
     screenName.classList.add("active");
     inputName.value = "";
 });
 
-// Iniciar Spawn de Patos (Acelerado para aparecerem muitos patos)
+// Iniciar Spawn de Patos Estáticos
 function startGame() {
     score = 0;
     memeTriggered = false;
     updateScore();
-    // Aparece um novo pato a cada 180 milissegundos
-    gameInterval = setInterval(spawnDuck, 180);
+    // Um novo pato surge a cada 250 milissegundos (ajuste se achar muito rápido/lento)
+    gameInterval = setInterval(spawnDuck, 250);
 }
 
 function stopGame() {
@@ -77,7 +77,7 @@ function updateScore() {
     }
 }
 
-// Reproduz o vídeo na tela inteira de forma rápida
+// Reproduz o vídeo na tela inteira de forma rápida (Mantido)
 function playMemeVideo() {
     memeModal.classList.add("active");
     memeVideo.currentTime = 0;
@@ -90,7 +90,7 @@ function playMemeVideo() {
     }, 2500);
 }
 
-// Lógica de Geração de Patos em Toda a Tela
+// Lógica de Geração de Patos Estáticos em Posições Aleatórias
 function spawnDuck() {
     const duck = document.createElement("div");
     duck.classList.add("duck");
@@ -98,8 +98,10 @@ function spawnDuck() {
 
     const rand = Math.random();
     let points = 1;
-    let speed = Math.random() * 2 + 2.5;
+    // Tempo que o pato fica na tela (segundos)
+    let duration = Math.random() * 1 + 2; // Entre 2 e 3 segundos
 
+    // Definir tipo do pato (Mantido)
     if (rand < 0.5) {
         duck.classList.add("yellow");
         points = 1;
@@ -112,22 +114,38 @@ function spawnDuck() {
     } else {
         duck.classList.add("rgb");
         points = 10;
-        speed = Math.random() * 1.2 + 1.2;
+        duration = Math.random() * 0.5 + 1.2; // Pato RGB some mais rápido
     }
 
-    // Posição vertical espalhada por quase toda a tela (5% a 90%)
-    const topPosition = Math.random() * 85 + 5;
-    duck.style.top = `${topPosition}%`;
-    duck.style.animation = `moveDuck ${speed}s linear forwards`;
+    // NOVA LÓGICA DE POSICIONAMENTO:
+    // Posição vertical aleatória (5% a 85% para não colar nas bordas)
+    const topPosition = Math.random() * 80 + 5;
+    // Posição horizontal aleatória (5% a 90%)
+    const leftPosition = Math.random() * 85 + 5;
 
+    duck.style.top = `${topPosition}%`;
+    duck.style.left = `${leftPosition}%`;
+    
+    // Aplica a duração da animação CSS (surgir e sumir)
+    duck.style.animationDuration = `${duration}s`;
+
+    // Clique no Pato (Clique rápido antes que suma)
     duck.addEventListener("mousedown", () => {
         score += points;
         updateScore();
-        duck.remove();
+        // Animação visual rápida de clique antes de remover
+        duck.style.transform = "scale(1.3)";
+        duck.style.opacity = "0";
+        // Remove do DOM após a micro animação de clique
+        setTimeout(() => duck.remove(), 100);
     });
 
+    // Remove o pato automaticamente quando a animação CSS terminar (ele sumiu)
     duck.addEventListener("animationend", () => {
-        duck.remove();
+        // Verifica se o pato ainda está no rio (não foi clicado)
+        if (duck.parentNode === river) {
+            duck.remove();
+        }
     });
 
     river.appendChild(duck);
