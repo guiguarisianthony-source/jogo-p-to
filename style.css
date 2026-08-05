@@ -99,9 +99,10 @@ button:hover {
     font-weight: bold;
     z-index: 20;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    pointer-events: none; /* Não atrapalha o clique nos patos */
 }
 
-/* O Rio (Ocupa a tela inteira) */
+/* O Rio (Tela Parada) */
 #river {
     width: 100vw;
     height: 100vh;
@@ -110,24 +111,34 @@ button:hover {
     overflow: hidden;
 }
 
-/* Patos */
+/* Patos Estáticos */
 .duck {
     position: absolute;
-    font-size: 45px;
+    font-size: 55px; /* Ligeiramente maior para facilitar o clique */
     cursor: pointer;
     user-select: none;
     white-space: nowrap;
+    /* Transição suave para quando o pato é clicado/some */
+    transition: transform 0.1s ease-out, opacity 0.1s ease-out; 
+    opacity: 0; /* Começa invisível */
 }
 
+/* Cores e Efeitos (Mantidos) */
 .duck.yellow { filter: drop-shadow(0 0 5px yellow); }
 .duck.red { filter: hue-rotate(130deg) drop-shadow(0 0 5px red); }
 .duck.blue { filter: hue-rotate(200deg) drop-shadow(0 0 5px blue); }
 
-/* Pato RGB */
+/* Pato RGB com Animação Parada */
 .duck.rgb {
-    animation: rgb-rainbow 0.8s infinite linear, moveDuck linear forwards;
+    animation: rgb-rainbow 0.8s infinite linear, patoApareceESome linear forwards;
 }
 
+/* Pato Normal com Animação Parada */
+.duck:not(.rgb) {
+    animation: patoApareceESome linear forwards;
+}
+
+/* Animação RGB (Mantida) */
 @keyframes rgb-rainbow {
     0% { filter: hue-rotate(0deg) drop-shadow(0 0 10px red); }
     33% { filter: hue-rotate(120deg) drop-shadow(0 0 10px green); }
@@ -135,13 +146,16 @@ button:hover {
     100% { filter: hue-rotate(360deg) drop-shadow(0 0 10px red); }
 }
 
-/* Animação do Pato Atravessando a Tela */
-@keyframes moveDuck {
-    0% { left: -60px; }
-    100% { left: 105vw; }
+/* NOVA ANIMAÇÃO: Pato aparece, fica parado, e some */
+@keyframes patoApareceESome {
+    0% { opacity: 0; transform: scale(0.5); }  /* Nasce pequeno e invisível */
+    10% { opacity: 1; transform: scale(1.1); } /* Aparece rápido e cresce */
+    20% { transform: scale(1); }               /* Tamanho normal */
+    80% { opacity: 1; transform: scale(1); }  /* Fica parado e visível */
+    100% { opacity: 0; transform: scale(0.8); } /* Some e encolhe */
 }
 
-/* Modal do Vídeo do Meme (Tela Inteira) */
+/* Modal do Vídeo do Meme (Mantido - Tela Inteira) */
 .modal {
     display: none;
     position: fixed;
